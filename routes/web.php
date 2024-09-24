@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\jaimeinsertar;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/store', [jaimeinsertar::class, 'store'])->name('store');
