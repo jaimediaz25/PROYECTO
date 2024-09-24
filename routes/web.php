@@ -17,4 +17,9 @@ use App\Http\Controllers\jaimeinsertar;
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::post('/store', [jaimeinsertar::class, 'store'])->name('store');
+
+Route::get('/formulario', function () {
+    return view('formulario'); // La vista 'formulario.blade.php' debe estar en 'resources/views'
+});
