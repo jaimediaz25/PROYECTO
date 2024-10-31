@@ -1,17 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Product;
+use App\Models\Ropa;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class RopaController extends Controller
 {
     public function create()
     {
-        return view('products.create');
+        return view('CRUDS_proy.ropa.create');
     }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -20,31 +18,26 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'quantity' => 'required|integer'
         ]);
-
-        Product::create([
+        Ropa::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'quantity' => $request->quantity
         ]);
-
-        return redirect()->route('products.index')->with('success', 'PRODUCTO CREADO CORRECTAMENTE');
+        return redirect()->route('ropa.index')->with('success', 'SE AGREGO CORRECTAMENTE');
     }
-
     public function index()
     {
-        $products = Product::simplePaginate(3);
-        return view('products.index', compact('products'));
+        $ropas = Ropa::all();
+        return view('CRUDS_proy.ropa.index', compact('ropas'));
     }
-
-public function edit($id)
-{
-    $product = Product::findOrFail($id);
-    return view('products.edit', compact('product'));
-}
-
-public function update(Request $request, $id)
-{
+    public function edit($id)
+    {
+        $ropas = Ropa::findOrFail($id);
+        return view('CRUDS_proy.ropa.edit', compact('ropas'));
+    }
+    public function update(Request $request, $id)
+    {
     $request->validate([
         'name' => 'required',
         'description' => 'required',
@@ -52,23 +45,20 @@ public function update(Request $request, $id)
         'quantity' => 'required|integer',
     ]);
 
-    $product = Product::findOrFail($id);
-    $product->update([
+    $ropas = Ropa::findOrFail($id);
+    $ropas->update([
         'name' => $request->name,
         'description' => $request->description,
         'price' => $request->price,
         'quantity' => $request->quantity,
     ]);
+    return redirect()->route('ropa.index')->with('success', 'ACTUALIZADO CORRECTAMENTE');
+    }
+    public function destroy($id)
+    {
+    $ropas = Ropa::findOrFail($id);
+    $ropas->delete();
 
-    return redirect()->route('products.index')->with('success', 'PRODUCTO ACTUALIZADO CORRECTAMENTE');
+    return redirect()->route('ropa.index')->with('success', 'ELIMINADO CORRECTAMENTE');
+    }
 }
-
-public function destroy($id)
-{
-    $product = Product::findOrFail($id);
-    $product->delete();
-
-    return redirect()->route('products.index')->with('success', 'PRODUCTO ELIMINADO CORRECTAMENTE');
-}
-}
-

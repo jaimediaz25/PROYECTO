@@ -10,10 +10,10 @@
         </div>
     @endif
 
-    <!-- Botón de añadir producto -->
+    
     <button type="button" onclick="window.location.href='{{ route('products.create') }}'" class="btn">Añadir</button>
 
-    <!-- Tabla de productos -->
+   
     <table>
         <thead>
             <tr>
