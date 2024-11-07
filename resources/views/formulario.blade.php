@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Formulario de Inserción</title>
-</head>
-<body>
-    <h1>Formulario para insertar datos</h1>
+@extends('layout2')
 
+@section('content')
+    <h1>Formulario para insertar datos</h1>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <form action="{{ route('store') }}" method="POST">
         @csrf
         <label for="campo1">NOMBRE:</label>
@@ -23,5 +28,4 @@
     @if(session('success'))
         <p style="color:green;">{{ session('success') }}</p>
     @endif
-</body>
-</html>
+    @endsection

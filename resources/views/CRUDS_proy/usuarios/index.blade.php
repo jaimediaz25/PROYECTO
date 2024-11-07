@@ -1,6 +1,17 @@
 @extends('layout')
-
 @section('content')
+<div class="menu-container">
+    <a href="{{ route('usuarios.index') }}" class="menu-button">Usuarios</a>
+    <a href="{{ route('ropa.index') }}" class="menu-button">Productos</a>
+    <a href="{{ route('pedidos.index') }}" class="menu-button">Órdenes</a>
+    <a href="{{ route('pagos.index') }}" class="menu-button">Pagos</a>
+    
+    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
+        <button type="submit" class="menu-button logout-button">Salir</button>
+    </form>
+</div>
+<br><br><br>
 <h1>Lista de Usuarios</h1>
 
 @if (session('success'))
@@ -8,6 +19,8 @@
         {{ session('success') }}
     </div>
 @endif
+
+    
 <button type="button" onclick="window.location.href='{{ route('usuarios.create') }}'" class="btn">Añadir</button>
 <table>
     <thead>
@@ -34,4 +47,6 @@
         @endforeach
     </tbody>
 </table>
+
 @endsection
+

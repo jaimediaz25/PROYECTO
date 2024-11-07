@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'log.activity' => \App\Http\Middleware\LogUserActivity::class,
+        'log.request' => \App\Http\Middleware\LogRequest::class,
     ];
     
 }

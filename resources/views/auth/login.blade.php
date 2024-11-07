@@ -1,22 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-   
+@extends('layout2')
 
-<form action="{{route('login')}}" method="POST">
+@section('content')
+<h1>Iniciar Sesión</h1>
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<form action="{{ route('login.submit') }}" method="POST">
     @csrf
-<label for="">Correo electronico</label>
-<input type="email" name="email" id="email">
-<label for="">Contraseña</label>
-<input type="password" name="password" id="password">
-<button type="submit">Iniciar sesion</button>
+    <div>
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ old('email') }}" required>
+    </div>
+    <div>
+        <label>Contraseña:</label>
+        <input type="password" name="password" required>
+    </div>
+    <button type="submit">Ingresar</button>
 </form>
-
-</body>
-</html>
+@endsection

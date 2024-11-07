@@ -9,6 +9,8 @@ use App\Http\Controllers\RopaController;
 use App\Http\Controllers\Usuario2Controller;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\RequestLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,22 +30,22 @@ Route::get('/', function () {
 Route::post('/store', [jaimeinsertar::class, 'store'])->name('store');
 
 Route::get('/formulario', function () {
-    return view('formulario'); // La vista 'formulario.blade.php' debe estar en 'resources/views'
+    return view('formulario'); 
 });
 
 //Route::get('/usuario/creado',[UsuarioControlador::class, 'create']);
 //Route::post('/usuario/creado', [UsuarioControlador::class, 'create'])->name('create');
 
 Route::get('/usuario/creado', function () {
-    return view('create'); // La vista 'formulario.blade.php' debe estar en 'resources/views'
+    return view('create');
 });
 
-Route::get('login', [AuthContraller::class, 'showLogin']);
+/*Route::get('login', [AuthContraller::class, 'showLogin']);
 Route::post('login', [AuthContraller::class, 'login'])->name('login');
 //Route::get('home', [AuthContraller::class, 'home'])->name('home');
 Route::get('/home',function(){
     return view('home');
-})->name('home'); 
+})->name('home'); */
 
 
 
@@ -59,7 +61,6 @@ Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('pro
 
 
 
-//PROYECTO DE TIENDA EN LINEA TENIS
 Route::get('CRUDS_proy/ropa/create', [RopaController::class, 'create'])->name('ropa.create');
 Route::post('CRUDS_proy/ropa/store', [RopaController::class, 'store'])->name('ropa.store');
 Route::get('CRUDS_proy/ropa', [RopaController::class, 'index'])->name('ropa.index');
@@ -88,9 +89,55 @@ Route::get('CRUDS_proy/pagos/{id}/edit', [PagoController::class, 'edit'])->name(
 Route::put('CRUDS_proy/pagos/{id}', [PagoController::class, 'update'])->name('pagos.update');
 Route::delete('CRUDS_proy/pagos/{id}', [PagoController::class, 'destroy'])->name('pagos.destroy');
 
+Route::get('auth/login', [AuthContraller::class, 'showLoginForm'])->name('login');
+Route::post('auth/login', [AuthContraller::class, 'login'])->name('login.submit');
+Route::post('logout', [AuthContraller::class, 'logout'])->name('logout');
 
-//RUTAS DEL MIDDLEWARE
+Route::get('auth/listamenu', [MenuController::class, 'index'])->name('listamenu');
+
+
+
+
+
+Route::middleware('log.request')->group(function () {
+    Route::get('CRUDS_proy/ropa/create', [RopaController::class, 'create'])->name('ropa.create');
+    Route::post('CRUDS_proy/ropa/store', [RopaController::class, 'store'])->name('ropa.store');
+    Route::get('CRUDS_proy/ropa', [RopaController::class, 'index'])->name('ropa.index');
+    Route::get('CRUDS_proy/ropa/{id}/edit', [RopaController::class, 'edit'])->name('ropa.edit');
+    Route::put('CRUDS_proy/ropa/{id}', [RopaController::class, 'update'])->name('ropa.update');
+    Route::delete('CRUDS_proy/ropa/{id}', [RopaController::class, 'destroy'])->name('ropa.destroy');
+    Route::get('CRUDS_proy/usuarios', [Usuario2Controller::class, 'index'])->name('usuarios.index');
+    Route::get('CRUDS_proy/usuarios/create', [Usuario2Controller::class, 'create'])->name('usuarios.create');
+    Route::post('CRUDS_proy/usuarios', [Usuario2Controller::class, 'store'])->name('usuarios.store');
+    Route::get('CRUDS_proy/usuarios/{id}/edit', [Usuario2Controller::class, 'edit'])->name('usuarios.edit');
+    Route::put('CRUDS_proy/usuarios/{id}', [Usuario2Controller::class, 'update'])->name('usuarios.update');
+    Route::delete('CRUDS_proy/usuarios/{id}', [Usuario2Controller::class, 'destroy'])->name('usuarios.destroy');
+    Route::get('CRUDS_proy/pedidos/create', [PedidoController::class, 'create'])->name('pedidos.create');
+    Route::post('CRUDS_proy/pedidos/store', [PedidoController::class, 'store'])->name('pedidos.store');
+    Route::get('CRUDS_proy/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+    Route::get('CRUDS_proy/pedidos/{id}/edit', [PedidoController::class, 'edit'])->name('pedidos.edit');
+    Route::put('CRUDS_proy/pedidos/{id}', [PedidoController::class, 'update'])->name('pedidos.update');
+    Route::delete('CRUDS_proy/pedidos/{id}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
+    Route::get('CRUDS_proy/pagos/create', [PagoController::class, 'create'])->name('pagos.create');
+    Route::post('CRUDS_proy/pagos/store', [PagoController::class, 'store'])->name('pagos.store');
+    Route::get('CRUDS_proy/pagos', [PagoController::class, 'index'])->name('pagos.index');
+    Route::get('CRUDS_proy/pagos/{id}/edit', [PagoController::class, 'edit'])->name('pagos.edit');
+    Route::put('CRUDS_proy/pagos/{id}', [PagoController::class, 'update'])->name('pagos.update');
+    Route::delete('CRUDS_proy/pagos/{id}', [PagoController::class, 'destroy'])->name('pagos.destroy');
+    Route::get('auth/login', [AuthContraller::class, 'showLoginForm'])->name('login');
+    Route::post('auth/login', [AuthContraller::class, 'login'])->name('login.submit');
+    Route::post('logout', [AuthContraller::class, 'logout'])->name('logout');
+    Route::get('auth/listamenu', [MenuController::class, 'index'])->name('listamenu');
+});
+
+
+Route::get('/request_logs', [RequestLogController::class, 'index'])->name('request.logs');
+
+
+/*Route::get('dashboard', function () {
+    return view('usuarios.index');
+})->middleware('auth')->name('dashboard');
 Route::middleware(['auth', 'log.activity'])->group(function () {
     Route::get('CRUDS_proy/usuarios/create', [UserProfileController::class, 'show']);
     Route::get('CRUDS_proy/usuarios/{id}/edit', [UserProfileController::class, 'settings']);
-});
+});*/
