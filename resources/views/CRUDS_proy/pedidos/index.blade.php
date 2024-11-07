@@ -6,6 +6,8 @@
     <a href="{{ route('ropa.index') }}" class="menu-button">Productos</a>
     <a href="{{ route('pedidos.index') }}" class="menu-button">Órdenes</a>
     <a href="{{ route('pagos.index') }}" class="menu-button">Pagos</a>
+    <a href="{{ route('request.logs') }}" class="menu-button">Solicitudes</a>
+    <a href="{{ route('listamenu') }}" class="menu-button">Menu</a>
     
     <form action="{{ route('logout') }}" method="POST" style="display: inline;">
         @csrf
