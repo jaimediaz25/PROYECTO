@@ -29,7 +29,7 @@ class PedidoController extends Controller
         ]);
         Pedido::create($request->all());
 
-        return redirect()->route('pedidos.index')->with('success', 'Pedido creado exitosamente.');
+        return redirect()->route('pedidos.index')->with('success', 'SE AGREGO CORRECTAMENTE');
     }
     public function edit($id)
     {
@@ -48,13 +48,13 @@ class PedidoController extends Controller
         $pedido = Pedido::findOrFail($id);
         $pedido->update($request->all());
 
-        return redirect()->route('pedidos.index')->with('success', 'Pedido actualizado exitosamente.');
+        return redirect()->route('pedidos.index')->with('success', 'SE ACTUALIZO CORRECTAMENTE');
     }
     public function destroy($id)
     {
         $pedido = Pedido::findOrFail($id);
         $pedido->delete();
 
-        return redirect()->route('pedidos.index')->with('success', 'Pedido eliminado exitosamente.');
+        return redirect()->route('pedidos.index')->with('success', 'SE ELIMINO CORRECTAMENTE');
     }
 }

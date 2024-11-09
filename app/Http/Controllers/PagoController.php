@@ -26,7 +26,7 @@ class PagoController extends Controller
         ]);
     Pago::create($request->all());
 
-        return redirect()->route('pagos.index')->with('success', 'Pago creado exitosamente.');
+        return redirect()->route('pagos.index')->with('success', 'SE AGREGO CORRECTAMENTE');
     }
     public function edit($id)
     {
@@ -45,13 +45,13 @@ class PagoController extends Controller
         $pago = Pago::findOrFail($id);
         $pago->update($request->all());
 
-        return redirect()->route('pagos.index')->with('success', 'Pago actualizado exitosamente.');
+        return redirect()->route('pagos.index')->with('success', 'SE ACTUALIZO CORRECTAMENTE');
     }
     public function destroy($id)
     {
         $pago = Pago::findOrFail($id);
         $pago->delete();
 
-        return redirect()->route('pagos.index')->with('success', 'Pago eliminado exitosamente.');
+        return redirect()->route('pagos.index')->with('success', 'SE ELIMINO CORRECTAMENTE');
     }
 }

@@ -22,7 +22,7 @@ class Usuario2Controller extends Controller
 
         Usuario::create($request->all());
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario creado exitosamente.');
+        return redirect()->route('usuarios.index')->with('success', 'SE AGREGO CORRECTAMENTE');
     }
     public function index()
     {
@@ -46,13 +46,13 @@ class Usuario2Controller extends Controller
         $usuario = Usuario::findOrFail($id);
         $usuario->update($request->all());
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');
+        return redirect()->route('usuarios.index')->with('success', 'SE ACTUALIZO CORRECTAMENTE.');
     }
     public function destroy($id)
     {
         $usuario = Usuario::findOrFail($id);
         $usuario->delete();
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado exitosamente.');
+        return redirect()->route('usuarios.index')->with('success', 'SE ELIMINO CORRECTAMENTE.');
     }
 }

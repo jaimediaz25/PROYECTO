@@ -65,7 +65,7 @@
                             <form action="{{ route('pagos.destroy', $pago->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" style="background-color: #ff4444; color: white; border-radius: 8px; padding: 8px 16px; font-weight: bold; transition: background-color 0.3s ease;" onclick="return confirm('¿Estás seguro?')">
+                                <button type="submit" class="btn btn-sm btn-danger" style="background-color: #ff4444; color: white; border-radius: 8px; padding: 8px 16px; font-weight: bold; transition: background-color 0.3s ease;" onclick="return confirm('ESTAS SEGURO?')">
                                     Eliminar
                                 </button>
                             </form>
