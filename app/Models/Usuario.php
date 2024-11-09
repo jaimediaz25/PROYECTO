@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre', 'email', 'contrasena'];
+    protected $fillable = ['nombre', 'email', 'contrasena', 'role'];
 
     public function setContrasenaAttribute($value)
     {

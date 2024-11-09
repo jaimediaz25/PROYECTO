@@ -28,7 +28,7 @@ class RopaController extends Controller
     }
     public function index()
     {
-        $ropas = Ropa::all();
+        $ropas = Ropa::simplePaginate(5);
         return view('CRUDS_proy.ropa.index', compact('ropas'));
     }
     public function edit($id)

@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 class PedidoController extends Controller
 {
     public function index()
-    {
-        $pedidos = Pedido::all();
+    { 
+        $pedidos = Pedido::simplePaginate(5);
         return view('CRUDS_proy.pedidos.index', compact('pedidos'));
     }
 

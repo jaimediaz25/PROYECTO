@@ -3,35 +3,33 @@
 <head>
     <title>Laravel CRUD</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .menu-container {
-            text-align: center;
-        }
-        .menu-button {
-            display: inline-block;
-            padding: 15px 30px;
-            margin: 10px;
-            background-color: #4A90E2; 
-            color: #fff; 
-            font-size: 16px;
-            font-weight: bold;
-            text-decoration: none;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-left: 50px;
-            margin-right: 50px;
-        }
-        .menu-button:hover {
-            background-color: #357ABD;
-        }
-        .logout-button {
-            background-color: #E74C3C; 
+        .pagination-container {
+            padding: 10px;
+            background-color: #e0f7fa;
+            border-radius: 12px;
         }
 
-        .logout-button:hover {
-            background-color: #C0392B; 
+        .pagination .page-item .page-link {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            margin: 0 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination .page-item .page-link:hover {
+            background-color: #01579b;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #b0bec5;
+            color: #ffffff;
+            pointer-events: none;
         }
     </style>
 </head>

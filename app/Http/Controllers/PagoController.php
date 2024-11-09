@@ -8,7 +8,7 @@ class PagoController extends Controller
 {
     public function index()
     {
-        $pagos = Pago::all();
+        $pagos = Pago::simplePaginate(5);
         return view('CRUDS_proy.pagos.index', compact('pagos'));
     }
 

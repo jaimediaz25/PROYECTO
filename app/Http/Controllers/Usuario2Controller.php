@@ -17,6 +17,7 @@ class Usuario2Controller extends Controller
             'nombre' => 'required',
             'email' => 'required|email|unique:usuarios',
             'contrasena' => 'required|min:6',
+            'role' => 'required|in:user,admin',
         ]);
 
         Usuario::create($request->all());
@@ -25,7 +26,7 @@ class Usuario2Controller extends Controller
     }
     public function index()
     {
-        $usuarios = Usuario::all();
+        $usuarios = Usuario::simplePaginate(5);
         return view('CRUDS_proy.usuarios.index', compact('usuarios'));
     }
     public function edit($id)

@@ -19,6 +19,7 @@
         <label>Nombre:</label>
         <input type="text" name="nombre" value="{{ old('nombre') }}" required>
     </div>
+    
     <div>
         <label>Email:</label>
         <input type="email" name="email" value="{{ old('email') }}" required>
@@ -26,6 +27,13 @@
     <div>
         <label>Contraseña:</label>
         <input type="password" name="contrasena" required>
+    </div>
+    <div>
+        <label>Rol:</label>
+        <select name="role" required>
+            <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>Usuario</option>
+            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Administrador</option>
+        </select>
     </div>
     <button type="submit">Crear Usuario</button>
 </form>

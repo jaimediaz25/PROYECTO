@@ -160,10 +160,25 @@ Route::middleware([isAuthenticated::class])->group(callback: function(){
     Route::delete('CRUDS_proy/pagos/{id}', [PagoController::class, 'destroy'])->name('pagos.destroy');
     Route::get('auth/listamenu', [MenuController::class, 'index'])->name('listamenu');
 });
-/*Route::get('dashboard', function () {
-    return view('usuarios.index');
-})->middleware('auth')->name('dashboard');
-Route::middleware(['auth', 'log.activity'])->group(function () {
-    Route::get('CRUDS_proy/usuarios/create', [UserProfileController::class, 'show']);
-    Route::get('CRUDS_proy/usuarios/{id}/edit', [UserProfileController::class, 'settings']);
-});*/
+
+
+
+Route::middleware('admin')->group(function () {
+    Route::get('CRUDS_proy/ropa/create', [RopaController::class, 'create'])->name('ropa.create');
+    Route::get('CRUDS_proy/ropa/{id}/edit', [RopaController::class, 'edit'])->name('ropa.edit');
+    Route::put('CRUDS_proy/ropa/{id}', [RopaController::class, 'update'])->name('ropa.update');
+    Route::delete('CRUDS_proy/ropa/{id}', [RopaController::class, 'destroy'])->name('ropa.destroy');
+    Route::get('CRUDS_proy/usuarios/create', [Usuario2Controller::class, 'create'])->name('usuarios.create');
+    Route::get('CRUDS_proy/usuarios/{id}/edit', [Usuario2Controller::class, 'edit'])->name('usuarios.edit');
+    Route::put('CRUDS_proy/usuarios/{id}', [Usuario2Controller::class, 'update'])->name('usuarios.update');
+    Route::delete('CRUDS_proy/usuarios/{id}', [Usuario2Controller::class, 'destroy'])->name('usuarios.destroy');
+    Route::get('CRUDS_proy/pedidos/create', [PedidoController::class, 'create'])->name('pedidos.create');
+    Route::get('CRUDS_proy/pedidos/{id}/edit', [PedidoController::class, 'edit'])->name('pedidos.edit');
+    Route::put('CRUDS_proy/pedidos/{id}', [PedidoController::class, 'update'])->name('pedidos.update');
+    Route::delete('CRUDS_proy/pedidos/{id}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
+    Route::get('CRUDS_proy/pagos/create', [PagoController::class, 'create'])->name('pagos.create');
+    Route::get('CRUDS_proy/pagos/{id}/edit', [PagoController::class, 'edit'])->name('pagos.edit');
+    Route::put('CRUDS_proy/pagos/{id}', [PagoController::class, 'update'])->name('pagos.update');
+    Route::delete('CRUDS_proy/pagos/{id}', [PagoController::class, 'destroy'])->name('pagos.destroy');
+    Route::get('/request_logs', [RequestLogController::class, 'index'])->name('request.logs');
+});
