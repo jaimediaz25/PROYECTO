@@ -12,8 +12,6 @@ class isAuthenticated
     
     public function handle(Request $request, Closure $next): Response
     {
-        //dd(vars: 'estas entrando al middleware');
-        //$auth = Auth::check();
         if(!Auth::check()){
             return redirect()->route('login');
         }

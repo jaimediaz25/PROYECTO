@@ -11,7 +11,6 @@ class LogRequest
 {
     public function handle(Request $request, Closure $next)
     {
-        // Antes de procesar la solicitud, registra los datos
         RequestLog::create([
             'method' => $request->method(),
             'url' => $request->fullUrl(),

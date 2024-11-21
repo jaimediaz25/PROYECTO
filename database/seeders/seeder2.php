@@ -21,7 +21,7 @@ class seeder2 extends Seeder
             'name' => $faker->name,
             'description' => $faker->text(20),
             'categoria' => $faker->word,
-            // más campos...
+            
         ]);
     }
     }

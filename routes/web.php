@@ -50,14 +50,12 @@ Route::get('/home',function(){
 
 
 
-//PRODUCTOS INSERTAR
+//PRIMER CRUD
 Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('products/store', [ProductController::class, 'store'])->name('products.store');
 Route::get('products', [ProductController::class, 'index'])->name('products.index');
-//PRODUCTOS ACTUALIZAR
 Route::get('products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('products/{id}', [ProductController::class, 'update'])->name('products.update');
-//PRODUCTOS ELIMINAR
 Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 
