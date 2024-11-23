@@ -11,19 +11,30 @@ class Usuario2Controller extends Controller
     {
         return view('CRUDS_proy.usuarios.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:usuarios',
             'contrasena' => 'required|min:6',
             'role' => 'required|in:user,admin',
         ]);
 
-        Usuario::create($request->all());
-
-        return redirect()->route('usuarios.index')->with('success', 'SE AGREGO CORRECTAMENTE');
+        try {
+            $usuario = Usuario::create([
+                'nombre' => $request->nombre,
+                'email' => $request->email,
+                'contrasena' => bcrypt($request->contrasena),
+                'role' => $request->role,
+            ]);
+            return redirect()->route('usuarios.index');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Hubo un error al crear el usuario.']);
+        }
     }
+
+
     public function index()
     {
         $usuarios = Usuario::simplePaginate(5);
@@ -37,22 +48,31 @@ class Usuario2Controller extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required',
+        $usuario = Usuario::find($id);
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:usuarios,email,' . $id,
             'contrasena' => 'nullable|min:6',
         ]);
 
-        $usuario = Usuario::findOrFail($id);
-        $usuario->update($request->all());
-
-        return redirect()->route('usuarios.index')->with('success', 'SE ACTUALIZO CORRECTAMENTE.');
+        $usuario->nombre = $request->input('nombre');
+        $usuario->email = $request->input('email');
+        if ($request->has('contrasena') && $request->input('contrasena') !== '') {
+            $usuario->contrasena = bcrypt($request->input('contrasena'));
+        }
+        $usuario->save();
+        return redirect()->route('usuarios.index');
     }
+
+
     public function destroy($id)
     {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->delete();
-
-        return redirect()->route('usuarios.index')->with('success', 'SE ELIMINO CORRECTAMENTE.');
+        $usuario = Usuario::find($id); 
+        if ($usuario) {
+            $usuario->delete(); 
+            return redirect()->route('usuarios.index');
+        }
+        return redirect()->route('usuarios.index');
     }
+
 }

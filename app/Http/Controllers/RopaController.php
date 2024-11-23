@@ -10,22 +10,30 @@ class RopaController extends Controller
     {
         return view('CRUDS_proy.ropa.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:1'
         ]);
-        Ropa::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'quantity' => $request->quantity
-        ]);
-        return redirect()->route('ropa.index')->with('success', 'SE AGREGO CORRECTAMENTE');
+
+        try {
+            $ropa = Ropa::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price,
+                'quantity' => $request->quantity,
+            ]);
+            return redirect()->route('ropa.index');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Hubo un error al agregar el producto.']);
+        }
     }
+
+
     public function index()
     {
         $ropas = Ropa::simplePaginate(5);
@@ -36,29 +44,33 @@ class RopaController extends Controller
         $ropas = Ropa::findOrFail($id);
         return view('CRUDS_proy.ropa.edit', compact('ropas'));
     }
+
     public function update(Request $request, $id)
     {
-    $request->validate([
-        'name' => 'required',
-        'description' => 'required',
-        'price' => 'required|numeric',
-        'quantity' => 'required|integer',
-    ]);
-
-    $ropas = Ropa::findOrFail($id);
-    $ropas->update([
-        'name' => $request->name,
-        'description' => $request->description,
-        'price' => $request->price,
-        'quantity' => $request->quantity,
-    ]);
-    return redirect()->route('ropa.index')->with('success', 'ACTUALIZADO CORRECTAMENTE');
+        $ropas = Ropa::find($id);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+        ]);
+        $ropas->name = $request->input('name');
+        $ropas->description = $request->input('description');
+        $ropas->price = $request->input('price');
+        $ropas->quantity = $request->input('quantity');
+        $ropas->save();
+        return redirect()->route('ropa.index');
     }
+
+
     public function destroy($id)
     {
-    $ropas = Ropa::findOrFail($id);
-    $ropas->delete();
-
-    return redirect()->route('ropa.index')->with('success', 'ELIMINADO CORRECTAMENTE');
+        $ropa = Ropa::find($id);
+        if ($ropa) {
+            $ropa->delete();
+            return redirect()->route('ropa.index');
+        }
+        return redirect()->route('ropa.index');
     }
+
 }

@@ -15,10 +15,10 @@
             </div>
         @endif
 
-        <form action="{{ route('usuarios.update', $usuario->id) }}" method="POST">
+        <form action="{{ route('usuarios.update', $usuario->id) }}" method="POST" id="edit-user-form">
             @csrf
             @method('PUT')
-            
+
             <div class="form-group mb-3">
                 <label for="nombre" style="color: #0d47a1;">Nombre:</label>
                 <input type="text" name="nombre" class="form-control" value="{{ old('nombre', $usuario->nombre) }}" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
@@ -42,5 +42,26 @@
         </form>
     </div>
 </div>
-@endsection
 
+<script>
+    $(document).ready(function() {
+        $('#edit-user-form').on('submit', function(event) {
+            event.preventDefault(); 
+            var data = $(this).serialize(); 
+            var url = $(this).attr('action'); 
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                success: function(response) {
+                    console.log("Usuario actualizado con éxito");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error al actualizar el usuario: ", error);
+                }
+            });
+        });
+    });
+</script>
+@endsection

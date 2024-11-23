@@ -15,26 +15,26 @@
             </div>
         @endif
 
-        <form action="{{ route('ropa.store') }}" method="POST">
+        <form id="product-form" action="{{ route('ropa.store') }}" method="POST">
             @csrf
             <div class="form-group mb-3">
                 <label for="name" style="color: #0d47a1;">Nombre:</label>
-                <input type="text" name="name" value="{{ old('name') }}" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="form-group mb-3">
                 <label for="description" style="color: #0d47a1;">Descripción:</label>
-                <textarea name="description" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">{{ old('description') }}</textarea>
+                <textarea name="description" id="description" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">{{ old('description') }}</textarea>
             </div>
 
             <div class="form-group mb-3">
                 <label for="price" style="color: #0d47a1;">Precio:</label>
-                <input type="text" name="price" value="{{ old('price') }}" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="text" name="price" id="price" value="{{ old('price') }}" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="form-group mb-4">
                 <label for="quantity" style="color: #0d47a1;">Cantidad:</label>
-                <input type="number" name="quantity" value="{{ old('quantity') }}" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="number" name="quantity" id="quantity" value="{{ old('quantity') }}" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="d-flex justify-content-center">
@@ -45,4 +45,28 @@
         </form>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#product-form').on('submit', function(event) {
+        event.preventDefault();
+        var data = $(this).serialize();
+        var url = $(this).attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(response) {
+                console.log('Producto creado exitosamente');
+                $('#product-form')[0].reset();
+            },
+            error: function(error) {
+                console.log('Hubo un error al procesar el producto.');
+                console.log(error);
+            }
+        });
+    });
+});
+</script>
 @endsection

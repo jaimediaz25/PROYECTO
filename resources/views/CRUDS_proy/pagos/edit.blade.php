@@ -1,4 +1,3 @@
-
 @extends('layout2')
 
 @section('content')
@@ -16,7 +15,7 @@
             </div>
         @endif
 
-        <form action="{{ route('pagos.update', $pago->id) }}" method="POST">
+        <form action="{{ route('pagos.update', $pago->id) }}" method="POST" id="edit-payment-form">
             @csrf
             @method('PUT')
 
@@ -43,4 +42,28 @@
         </form>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function() {
+    $('#edit-payment-form').on('submit', function(event) {
+        event.preventDefault(); 
+        var data = $(this).serialize(); 
+        var url = $(this).attr('action');
+       
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(response) {
+                console.log("Pago actualizado con éxito");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error al actualizar el pago: ", error);
+            }
+        });
+    });
+});
+
+</script>
 @endsection

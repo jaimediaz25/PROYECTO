@@ -15,26 +15,26 @@
             </div>
         @endif
 
-        <form action="{{ route('pedidos.store') }}" method="POST">
+        <form id="order-form" action="{{ route('pedidos.store') }}" method="POST">
             @csrf
             <div class="form-group mb-3">
                 <label for="cliente" style="color: #0d47a1;">Cliente:</label>
-                <input type="text" name="cliente" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="text" name="cliente" id="cliente" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="form-group mb-3">
                 <label for="producto" style="color: #0d47a1;">Producto:</label>
-                <input type="text" name="producto" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="text" name="producto" id="producto" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="form-group mb-3">
                 <label for="cantidad" style="color: #0d47a1;">Cantidad:</label>
-                <input type="number" name="cantidad" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="number" name="cantidad" id="cantidad" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="form-group mb-4">
                 <label for="total" style="color: #0d47a1;">Total:</label>
-                <input type="number" step="0.01" name="total" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="number" step="0.01" name="total" id="total" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="d-flex justify-content-center">
@@ -45,5 +45,28 @@
         </form>
     </div>
 </div>
-@endsection
 
+<script>
+$(document).ready(function() {
+    $('#order-form').on('submit', function(event) {
+        event.preventDefault();
+        var data = $(this).serialize();
+        var url = $(this).attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(response) {
+                console.log('Pedido creado exitosamente');
+                $('#order-form')[0].reset();
+            },
+            error: function(error) {
+                console.log('Hubo un error al procesar el pedido.');
+                console.log(error);
+            }
+        });
+    });
+});
+</script>
+@endsection

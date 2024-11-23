@@ -27,10 +27,22 @@ class PedidoController extends Controller
             'cantidad' => 'required|integer|min:1',
             'total' => 'required|numeric',
         ]);
-        Pedido::create($request->all());
 
-        return redirect()->route('pedidos.index')->with('success', 'SE AGREGO CORRECTAMENTE');
+        try {
+            Pedido::create([
+                'cliente' => $request->cliente,
+                'producto' => $request->producto,
+                'cantidad' => $request->cantidad,
+                'total' => $request->total,
+            ]);
+
+            return redirect()->route('pedidos.index');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Hubo un error al procesar el pedido.']);
+        }
     }
+
+
     public function edit($id)
     {
         $pedido = Pedido::findOrFail($id);
@@ -39,22 +51,30 @@ class PedidoController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $pedido = Pedido::find($id);
+        $validated = $request->validate([
             'cliente' => 'required|string|max:255',
             'producto' => 'required|string|max:255',
             'cantidad' => 'required|integer|min:1',
             'total' => 'required|numeric',
         ]);
-        $pedido = Pedido::findOrFail($id);
-        $pedido->update($request->all());
 
-        return redirect()->route('pedidos.index')->with('success', 'SE ACTUALIZO CORRECTAMENTE');
+        $pedido->cliente = $request->input('cliente');
+        $pedido->producto = $request->input('producto');
+        $pedido->cantidad = $request->input('cantidad');
+        $pedido->total = $request->input('total');
+        $pedido->save();
+        return redirect()->route('pedidos.index');
     }
+
     public function destroy($id)
     {
-        $pedido = Pedido::findOrFail($id);
-        $pedido->delete();
+        $pedido = Pedido::find($id);
 
-        return redirect()->route('pedidos.index')->with('success', 'SE ELIMINO CORRECTAMENTE');
+        if ($pedido) {
+            $pedido->delete();
+            return redirect()->route('pedidos.index'); 
+        }
+        return redirect()->route('pedidos.index'); 
     }
 }

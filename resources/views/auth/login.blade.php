@@ -5,17 +5,7 @@
     <div class="card p-5 shadow-lg" style="max-width: 800px; width: 100%; background-color: #f0f8ff;">
         <h2 class="text-center mb-5" style="color: #1e3a8a; font-size: 2.2rem;">Iniciar Sesión</h2>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('login.submit') }}" method="POST">
+        <form id="login-form" method="POST" action="{{ route('login.submit') }}">
             @csrf
             <div class="mb-4">
                 <label for="email" class="form-label" style="color: #1e3a8a; font-size: 1.2rem;">Correo Electrónico</label>
@@ -29,4 +19,34 @@
         </form>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#login-form').on('submit', function(event) {
+        event.preventDefault(); 
+        var data = $(this).serialize();
+        var url = $(this).attr('action');
+        console.log(data);
+        console.log(url); 
+
+        $.ajax({
+            type: 'POST',
+            url: url,  
+            data: data,
+            success: function(response) {
+                console.log('Login exitoso');
+                window.location.href = 'listamenu';
+            },
+            error: function(error) {
+                if (error.responseJSON && error.responseJSON.errors && error.responseJSON.errors.email) {
+                    console.log('Credenciales incorrectas');
+                } else {
+                    console.log('Error desconocido');
+                }
+            }
+        });
+    });
+});
+</script>
+
 @endsection

@@ -33,7 +33,7 @@
                 <i class="bi bi-arrow-right-circle"></i>
             </a>
             
-            <form action="{{ route('logout') }}" method="POST" class="mt-3">
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="mt-3">
                 @csrf
                 <button type="submit" class="btn btn-danger w-100" style="font-size: 1.2rem; background-color: #1e3a8a; color: white; border: none;">
                     🔒 Salir
@@ -42,4 +42,34 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#logout-form').on('submit', function(event) {
+        event.preventDefault();
+
+        var data = $(this).serialize();
+        var url = $(this).attr('action');
+
+        console.log(data);
+        console.log(url);
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(response) {
+                console.log(response);
+                if (response.redirect_url) {
+                    console.log('Logout exitoso');
+                    window.location.href = response.redirect_url;
+                    
+                } 
+            },
+            error: function(error) {
+                console.error('Error en el logout:', error);
+            }
+        });
+    });
+});
+</script>
 @endsection

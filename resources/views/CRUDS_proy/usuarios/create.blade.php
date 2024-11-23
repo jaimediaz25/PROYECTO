@@ -15,7 +15,7 @@
             </div>
         @endif
 
-        <form action="{{ route('usuarios.store') }}" method="POST">
+        <form id="user-form" action="{{ route('usuarios.store') }}" method="POST">
             @csrf
             <div class="form-group mb-3">
                 <label for="nombre" style="color: #0d47a1;">Nombre:</label>
@@ -48,4 +48,28 @@
         </form>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#user-form').on('submit', function(event) {
+        event.preventDefault();  
+        var data = $(this).serialize(); 
+        var url = $(this).attr('action'); 
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(response) {
+                console.log('Usuario creado exitosamente');
+                $('#user-form')[0].reset();
+            },
+            error: function(error) {
+                console.log('Hubo un error al crear el usuario.');
+                console.log(error);
+            }
+        });
+    });
+});
+</script>
 @endsection

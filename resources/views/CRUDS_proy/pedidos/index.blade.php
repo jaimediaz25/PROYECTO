@@ -22,7 +22,7 @@
             <a href="{{ route('listamenu') }}" class="menu-button px-3 py-2 rounded-pill" style="background-color: #1e3a8a; color: white; font-weight: bold; text-transform: uppercase; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease;">
                 Menú Principal
             </a>
-            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+            <form action="{{ route('logout') }}" method="POST" id="logout-form" style="display: inline;">
                 @csrf
                 <button type="submit" class="menu-button logout-button px-3 py-2 rounded-pill" style="background-color: #d32f2f; color: white; font-weight: bold; text-transform: uppercase; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease;">
                     Salir
@@ -35,11 +35,6 @@
 <div class="container mt-5" style="max-width: 900px;">
     <div class="card p-4 shadow-lg" style="border: 1px solid #1e3a8a; border-radius: 15px;">
         <h2 class="text-center mb-4" style="color: #0d47a1;">Lista de Órdenes</h2>
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
         <button type="button" onclick="window.location.href='{{ route('pedidos.create') }}'" class="btn btn-success mb-3" style="background-color: #388e3c; color: white; border-radius: 8px; padding: 12px 24px; font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease;">
             Añadir Orden
         </button>
@@ -55,7 +50,7 @@
             </thead>
             <tbody>
                 @foreach ($pedidos as $pedido)
-                    <tr>
+                    <tr id="row-{{ $pedido->id }}">
                         <td>{{ $pedido->cliente }}</td>
                         <td>{{ $pedido->producto }}</td>
                         <td>{{ $pedido->cantidad }}</td>
@@ -64,10 +59,10 @@
                             <button type="button" onclick="window.location.href='{{ route('pedidos.edit', $pedido->id) }}'" class="btn btn-sm" style="background-color: #0d508f; color: white; border-radius: 8px; margin-right: 10px; padding: 8px 16px; font-weight: bold; transition: background-color 0.3s ease;">
                                 Editar
                             </button>
-                            <form action="{{ route('pedidos.destroy', $pedido->id) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('pedidos.destroy', $pedido->id) }}" method="POST" class="delete-form" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" style="background-color: #ff4444; color: white; border-radius: 8px; padding: 8px 16px; font-weight: bold; transition: background-color 0.3s ease;" onclick="return confirm('ESTAS SEGURO?')">
+                                <button type="submit" data-id="{{ $pedido->id }}" class="btn btn-sm btn-danger" style="background-color: #ff4444; color: white; border-radius: 8px; padding: 8px 16px; font-weight: bold; transition: background-color 0.3s ease;">
                                     Eliminar
                                 </button>
                             </form>
@@ -81,4 +76,48 @@
         </div>    
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.delete-form').on('submit', function(event) {
+            event.preventDefault();
+            const form = $(this);
+            const url = form.attr('action');
+            const id = form.find('button').data('id');
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: form.serialize(),
+                success: function(response) {
+                    console.log('Pedido eliminado correctamente');
+                    $('#row-' + id).fadeOut();
+                },
+                error: function(error) {
+                    console.log('Error al eliminar el pedido:', error);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+    $('#logout-form').on('submit', function(event) {
+        event.preventDefault();  
+        
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            
+            success: function(response) {
+                console.log('Cerraste sesión correctamente');
+                window.location.href = '{{ route('login') }}';
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al cerrar sesión:', error);
+            }
+        });
+    });
+});
+</script>
 @endsection

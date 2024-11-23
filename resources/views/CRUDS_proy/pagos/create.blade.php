@@ -15,21 +15,21 @@
             </div>
         @endif
 
-        <form action="{{ route('pagos.store') }}" method="POST">
+        <form id="payment-form" action="{{ route('pagos.store') }}" method="POST">
             @csrf
             <div class="form-group mb-3">
                 <label for="cliente" style="color: #0d47a1;">Cliente:</label>
-                <input type="text" name="cliente" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="text" name="cliente" id="cliente" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="form-group mb-3">
                 <label for="monto" style="color: #0d47a1;">Monto:</label>
-                <input type="number" step="0.01" name="monto" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="number" step="0.01" name="monto" id="monto" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="form-group mb-4">
                 <label for="metodo_pago" style="color: #0d47a1;">Método de Pago:</label>
-                <input type="text" name="metodo_pago" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
+                <input type="text" name="metodo_pago" id="metodo_pago" class="form-control" required style="border-radius: 10px; padding: 10px; border: 1px solid #0d47a1;">
             </div>
 
             <div class="d-flex justify-content-center">
@@ -40,5 +40,28 @@
         </form>
     </div>
 </div>
-@endsection
 
+<script>
+$(document).ready(function() {
+    $('#payment-form').on('submit', function(event) {
+        event.preventDefault();
+        var data = $(this).serialize();
+        var url = $(this).attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(response) {
+                console.log('Pago creado exitosamente');
+                $('#payment-form')[0].reset();
+            },
+            error: function(error) {
+                console.log('Hubo un error al procesar el pago.');
+                console.log(error);
+            }
+        });
+    });
+});
+</script>
+@endsection

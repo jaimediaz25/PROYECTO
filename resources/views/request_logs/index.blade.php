@@ -22,7 +22,7 @@
             <a href="{{ route('listamenu') }}" class="menu-button px-3 py-2 rounded-pill" style="background-color: #1e3a8a; color: white; font-weight: bold; text-transform: uppercase; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease;">
                 Menú Principal
             </a>
-            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                 @csrf
                 <button type="submit" class="menu-button logout-button px-3 py-2 rounded-pill" style="background-color: #d32f2f; color: white; font-weight: bold; text-transform: uppercase; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease;">
                     Salir
@@ -72,4 +72,25 @@
         </div>    
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+    $('#logout-form').on('submit', function(event) {
+        event.preventDefault();  
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            
+            success: function(response) {
+                console.log('Cerraste sesión correctamente');
+                window.location.href = '{{ route('login') }}';
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al cerrar sesión:', error);
+            }
+        });
+    });
+});
+</script>
 @endsection

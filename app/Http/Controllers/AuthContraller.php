@@ -14,26 +14,21 @@ class AuthContraller extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            
-            return redirect()->route('listamenu')->with('success', '¡Bienvenido!');
+        $credentials = $request->only('email', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('listamenu');
+        } else {
+            return back()->withErrors(['email' => 'Credenciales incorrectas']);
         }
-
-        return back()->withErrors([
-            'email' => 'Credenciales incorrectas.',
-        ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect()->route('login')->with('success', 'Sesión cerrada correctamente.');
-    }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
+        }
 
 }
